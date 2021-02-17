@@ -195,7 +195,34 @@ summary {
 </div>
 
 
+<div id="detect-string-patterns-with-str_detect" class="section level3">
+<h3>Detect string patterns with <code>str_detect()</code></h3>
+<ul>
+<li>function to search for a pattern you provide in the variable you specify for any entry that matches that pattern<br />
+</li>
+<li>looks for exact match to pattern and returns TRUE or FALSE (a logical) for each element<br />
+</li>
+<li><code>str_subset()</code> wraps <code>filter()</code> and <code>str_detect()</code> into one function</li>
+</ul>
+<pre class="r"><code># Create toy vector (for this example) that contains a number of different strings 
+# Add whitespaces to see how stringr can deal with that too
+vec &lt;- c(&quot;A Unicorn   Fish &quot;, &quot;add   cornmeal&quot;, &quot;French FRIES&quot;, &quot;acorn Squash &quot;)
 
+
+# Which of these strings in the vector contain the word &quot;corn&quot;?
+str_detect(vec, pattern = &quot;corn&quot;)</code></pre>
+<pre><code>## [1]  TRUE  TRUE FALSE  TRUE</code></pre>
+<pre class="r"><code>#What if we&#39;re searching in a df? 
+# view(starwars)
+
+# Want to detect in starwars df if the string &quot;walk&quot; shows up
+# Will put inside a filter() to keep rows where pattern does show up 
+walk_subset &lt;- starwars %&gt;% 
+  filter(str_detect(name, pattern = &quot;walk&quot;))
+
+#`str_subset` does same as above but with one function 
+fin_subset &lt;- str_subset(starwars$name, pattern = &quot;Fin&quot;)</code></pre>
+</div>
 
 
 

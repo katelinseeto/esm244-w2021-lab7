@@ -11,3 +11,31 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse) # contains stringr
 ```
 
+### Detect string patterns with `str_detect()`
+* function to search for a pattern you provide in the variable you specify for any entry that matches that pattern  
+* looks for exact match to pattern and returns TRUE or FALSE (a logical) for each element  
+* `str_subset()` wraps `filter()` and `str_detect()` into one function
+
+```{r}
+# Create toy vector (for this example) that contains a number of different strings 
+# Add whitespaces to see how stringr can deal with that too
+vec <- c("A Unicorn   Fish ", "add   cornmeal", "French FRIES", "acorn Squash ")
+
+
+# Which of these strings in the vector contain the word "corn"?
+str_detect(vec, pattern = "corn")
+
+
+#What if we're searching in a df? 
+# view(starwars)
+
+# Want to detect in starwars df if the string "walk" shows up
+# Will put inside a filter() to keep rows where pattern does show up 
+walk_subset <- starwars %>% 
+  filter(str_detect(name, pattern = "walk"))
+
+#`str_subset` does same as above but with one function 
+fin_subset <- str_subset(starwars$name, pattern = "Fin")
+
+```
+
