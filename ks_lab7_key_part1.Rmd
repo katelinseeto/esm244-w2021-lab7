@@ -37,5 +37,17 @@ walk_subset <- starwars %>%
 #`str_subset` does same as above but with one function 
 fin_subset <- str_subset(starwars$name, pattern = "Fin")
 
+``` 
+### Replace a string pattern with something else using `str_replace()`
+* For example if a spp name has been misspelled throughout a whole dataset
+```{r}
+# create a new vector from toy vector where anytime "corn" shows up replace it with "COOL"
+vec_bren <- str_replace(vec, pattern = "corn", replacement = "COOL")
+
+vec_bren
+
+# in df, replace the pattern "Sky" with the pattern "TORNADO"
+sw_tornado <- starwars %>% 
+  mutate(name = str_replace(name, pattern = "Sky", replacement = "TORNADO"))
 ```
 

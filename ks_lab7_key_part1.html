@@ -223,6 +223,21 @@ walk_subset &lt;- starwars %&gt;%
 #`str_subset` does same as above but with one function 
 fin_subset &lt;- str_subset(starwars$name, pattern = &quot;Fin&quot;)</code></pre>
 </div>
+<div id="replace-a-string-pattern-with-something-else-using-str_replace" class="section level3">
+<h3>Replace a string pattern with something else using <code>str_replace()</code></h3>
+<ul>
+<li>For example if a spp name has been misspelled throughout a whole dataset</li>
+</ul>
+<pre class="r"><code># create a new vector from toy vector where anytime &quot;corn&quot; shows up replace it with &quot;COOL&quot;
+vec_bren &lt;- str_replace(vec, pattern = &quot;corn&quot;, replacement = &quot;COOL&quot;)
+
+vec_bren</code></pre>
+<pre><code>## [1] &quot;A UniCOOL   Fish &quot; &quot;add   COOLmeal&quot;    &quot;French FRIES&quot;     
+## [4] &quot;aCOOL Squash &quot;</code></pre>
+<pre class="r"><code># in df, replace the pattern &quot;Sky&quot; with the pattern &quot;TORNADO&quot;
+sw_tornado &lt;- starwars %&gt;% 
+  mutate(name = str_replace(name, pattern = &quot;Sky&quot;, replacement = &quot;TORNADO&quot;))</code></pre>
+</div>
 
 
 
