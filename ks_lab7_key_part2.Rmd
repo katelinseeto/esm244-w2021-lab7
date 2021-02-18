@@ -38,13 +38,30 @@ hobbit_text_p34
 
 ### Take entire text, split it up by line, then trim excess whitespace 
 * Use `str_split()` to recognize anywhere there is a line break (\n) and split that up and then un-nest them into their own. Must write out as "\\n" since \ tells R that it should recognize what's coming next as a character, don't assume it's something else
-* 
+* `unnest()` to take each element of each vector and give it it's own space 
 ```{r}
 hobbit_tidy <- data.frame(hobbit_text) %>%  #convert hobbit text into df, each row is now a page
-  mutate(text_full = str_split(hobbit_text, pattern = "\\n")) # text_full contains a series of strings which is each line but is still only part of same element, 
+  mutate(text_full = str_split(hobbit_text, pattern = '\\n')) %>%  # text_full contains a series of strings which is each line but is still only part of same element
+  unnest(text_full) %>% # hobbit_text is chapter info but now each line of text, has it's own line in df in the text_full col
+  mutate(text_full = str_trim(text_full)) #remove whitespace
 
 ```
 
+### Wrangle so that there is grouping variable that indicates the chapter number so we can do analysis comparing differt chapters 
+* use `str_detect()` to detect the word "chapter"
+* Will create a new column to list chapter and will duplicate for when "Chapter" appears but will list NA if it doesn't 
+* use mutate(chapter = case_when()) since it will be a conditional column
+* must specify what class is associated with your NA values in this column, in this case NA_character
+* then will use `fill()` to fill in that chapter number to any NA's below it until it gets to next non-NA value
+```{r}
+hobbit_df <- hobbit_tidy %>% 
+  slice(-(1:125)) %>% # remove title pg, table contents etc
+  mutate(chapter = case_when(
+    str_detect(text_full, pattern = "Chapter") ~ text_full, 
+    TRUE ~ NA_character_
+  )) %>% 
+  fill(chapter)
+```
 
 
 

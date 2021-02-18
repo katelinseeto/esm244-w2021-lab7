@@ -218,10 +218,29 @@ hobbit_text_p34</code></pre>
 <h3>Take entire text, split it up by line, then trim excess whitespace</h3>
 <ul>
 <li>Use <code>str_split()</code> to recognize anywhere there is a line break () and split that up and then un-nest them into their own. Must write out as “\n” since  tells R that it should recognize what’s coming next as a character, don’t assume it’s something else</li>
-<li></li>
+<li><code>unnest()</code> to take each element of each vector and give it it’s own space</li>
 </ul>
 <pre class="r"><code>hobbit_tidy &lt;- data.frame(hobbit_text) %&gt;%  #convert hobbit text into df, each row is now a page
-  mutate(text_full = str_split(hobbit_text, pattern = &quot;\\n&quot;)) # text_full contains a series of strings which is each line but is still only part of same element, </code></pre>
+  mutate(text_full = str_split(hobbit_text, pattern = &#39;\\n&#39;)) %&gt;%  # text_full contains a series of strings which is each line but is still only part of same element
+  unnest(text_full) %&gt;% # hobbit_text is chapter info but now each line of text, has it&#39;s own line in df in the text_full col
+  mutate(text_full = str_trim(text_full)) #remove whitespace</code></pre>
+</div>
+<div id="wrangle-so-that-there-is-grouping-variable-that-indicates-the-chapter-number-so-we-can-do-analysis-comparing-differt-chapters" class="section level3">
+<h3>Wrangle so that there is grouping variable that indicates the chapter number so we can do analysis comparing differt chapters</h3>
+<ul>
+<li>use <code>str_detect()</code> to detect the word “chapter”</li>
+<li>Will create a new column to list chapter and will duplicate for when “Chapter” appears but will list NA if it doesn’t</li>
+<li>use mutate(chapter = case_when()) since it will be a conditional column</li>
+<li>must specify what class is associated with your NA values in this column, in this case NA_character</li>
+<li>then will use <code>fill()</code> to fill in that chapter number to any NA’s below it until it gets to next non-NA value</li>
+</ul>
+<pre class="r"><code>hobbit_df &lt;- hobbit_tidy %&gt;% 
+  slice(-(1:125)) %&gt;% # remove title pg, table contents etc
+  mutate(chapter = case_when(
+    str_detect(text_full, pattern = &quot;Chapter&quot;) ~ text_full, 
+    TRUE ~ NA_character_
+  )) %&gt;% 
+  fill(chapter)</code></pre>
 </div>
 
 
