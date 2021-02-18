@@ -1,0 +1,17 @@
+---
+title: 'Part 2: Text Analysis with The Hobbit'
+author: "Katelin Seeto"
+date: "2/18/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(tidytext)
+library(textdata)
+library(pdftools)
+library(ggwordcloud)
+```
+
