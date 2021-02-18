@@ -195,7 +195,34 @@ summary {
 </div>
 
 
+<div id="read-in-the-hobbit-with-pdftoolspdf_text-since-text-is-in-pdf-format" class="section level3">
+<h3>Read in The Hobbit with <code>pdftools::pdf_text()</code> since text is in pdf format</h3>
+<ul>
+<li>When you open that text notice that line separation is shown by </li>
+<li>Each page of text doc is stored its own element inside a huge vector containing all the text.</li>
+<li>Ex) page 34 is 34th element</li>
+</ul>
+<pre class="r"><code>hobbit_text &lt;- pdf_text(&quot;the-hobbit.pdf&quot;)
 
+# Since file is large and it take a long time to run function we don&#39;t want this too run every time we knit
+# add cache = TRUE to code chunk header so it won&#39;t re-run that code when you&#39;re knitting unless a change has been made to the code </code></pre>
+</div>
+<div id="search-for-text-on-page-34" class="section level3">
+<h3>Search for text on page 34</h3>
+<pre class="r"><code>hobbit_text_p34 &lt;- hobbit_text[34]
+hobbit_text_p34</code></pre>
+<pre><code>## [1] &quot;Chapter II\r\nROAST MUTTON\r\nUp jumped Bilbo, and putting on his dressing-gown went into the dining-\r\nroom. There he saw nobody, but all the signs of a large and hurried\r\nbreakfast. There was a fearful mess in the room, and piles of unwashed\r\ncrocks in the kitchen. Nearly every pot and pan he possessed seemed to\r\nhave been used. The washing-up was so dismally real that Bilbo was\r\nforced to believe the party of the night before had not been part of his bad\r\ndreams, as he had rather hoped. Indeed he was really relieved after all to\r\nthink that they had all gone without him, and without bothering to wake\r\nhim up (“but with never a thank-you” he thought); and yet in a way he\r\ncould not help feeling just a trifle disappointed. The feeling surprised him.\r\n    “Don’t be a fool, Bilbo Baggins!” he said to himself, “thinking of\r\ndragons and all that outlandish nonsense at your age!” So he put on an\r\napron, lit fires, boiled water, and washed up. Then he had a nice little\r\nbreakfast in the kitchen before turning out the dining-room. By that time\r\nthe sun was shining; and the front door was open, letting in a warm spring\r\nbreeze. Bilbo began to whistle loudly and to forget about the night before.\r\nIn fact he was just sitting down to a nice little second breakfast in the\r\ndining-room by the open window, when in walked Gandalf.\r\n    “My dear fellow,” said he, “whenever are you going to come? What\r\nabout an early start?—and here you are having breakfast, or whatever you\r\ncall it, at half past ten! They left you the message, because they could not\r\nwait.”\r\n    “What message?” said poor Mr. Baggins all in a fluster.\r\n&quot;</code></pre>
+<pre class="r"><code># Notice it&#39;s still not tidy</code></pre>
+</div>
+<div id="take-entire-text-split-it-up-by-line-then-trim-excess-whitespace" class="section level3">
+<h3>Take entire text, split it up by line, then trim excess whitespace</h3>
+<ul>
+<li>Use <code>str_split()</code> to recognize anywhere there is a line break () and split that up and then un-nest them into their own. Must write out as “\n” since  tells R that it should recognize what’s coming next as a character, don’t assume it’s something else</li>
+<li></li>
+</ul>
+<pre class="r"><code>hobbit_tidy &lt;- data.frame(hobbit_text) %&gt;%  #convert hobbit text into df, each row is now a page
+  mutate(text_full = str_split(hobbit_text, pattern = &quot;\\n&quot;)) # text_full contains a series of strings which is each line but is still only part of same element, </code></pre>
+</div>
 
 
 

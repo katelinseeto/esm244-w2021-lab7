@@ -15,3 +15,44 @@ library(pdftools)
 library(ggwordcloud)
 ```
 
+### Read in The Hobbit with `pdftools::pdf_text()` since text is in pdf format
+* When you open that text notice that line separation is shown by \n
+* Each page of text doc is stored its own element inside a huge vector containing all the text. 
+* Ex) page 34 is 34th element
+```{r, cache = TRUE}
+
+hobbit_text <- pdf_text("the-hobbit.pdf")
+
+# Since file is large and it take a long time to run function we don't want this too run every time we knit
+# add cache = TRUE to code chunk header so it won't re-run that code when you're knitting unless a change has been made to the code 
+```
+
+### Search for text on page 34 
+```{r}
+hobbit_text_p34 <- hobbit_text[34]
+hobbit_text_p34
+
+# Notice it's still not tidy
+
+```
+
+### Take entire text, split it up by line, then trim excess whitespace 
+* Use `str_split()` to recognize anywhere there is a line break (\n) and split that up and then un-nest them into their own. Must write out as "\\n" since \ tells R that it should recognize what's coming next as a character, don't assume it's something else
+* 
+```{r}
+hobbit_tidy <- data.frame(hobbit_text) %>%  #convert hobbit text into df, each row is now a page
+  mutate(text_full = str_split(hobbit_text, pattern = "\\n")) # text_full contains a series of strings which is each line but is still only part of same element, 
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
