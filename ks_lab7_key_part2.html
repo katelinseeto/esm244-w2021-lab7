@@ -242,6 +242,39 @@ hobbit_text_p34</code></pre>
   )) %&gt;% 
   fill(chapter)</code></pre>
 </div>
+<div id="create-new-column-with-just-chapter-so-when-we-plot-it-wont-be-in-alphabetical-order" class="section level3">
+<h3>Create new column with just chapter # so when we plot it won’t be in alphabetical order</h3>
+<p><em><code>separate()</code> to separate chapt # into it’s own column </em> However since chapter number is a roman numeral it’s intitally recognized as a character. * Use mutate to create new col called chapter which is a numeric version of the roman numeral version of the number col</p>
+<pre class="r"><code> hobbit_df &lt;- hobbit_df %&gt;% 
+  separate(col = chapter, into = c(&quot;ch&quot;, &quot;no&quot;), sep = &quot; &quot;) %&gt;% 
+  mutate(chapter = as.numeric(as.roman(no)))</code></pre>
+</div>
+<div id="get-into-tokenized-version-where-one-token-is-a-single-word" class="section level3">
+<h3>Get into tokenized version where one token is a single word</h3>
+<ul>
+<li>tidy format for text analysis</li>
+<li><code>unnest_tokens()</code> function to split columns into tokens, flattening the table into one token per row. unnest_tokens(name of new column, source you’ll break up)</li>
+</ul>
+<pre class="r"><code>hobbit_tokens &lt;- hobbit_df %&gt;% 
+  unnest_tokens(word, text_full) %&gt;% 
+  select(-hobbit_text)
+
+# Get word count by chapter
+hobbit_wordcount &lt;- hobbit_tokens %&gt;% 
+  count(chapter, word) </code></pre>
+</div>
+<div id="remove-all-stop_words-that-exist-in-hobbit_tokens" class="section level3">
+<h3>Remove all stop_words that exist in hobbit_tokens</h3>
+<ul>
+<li>stop_words are words like a, the, of, etc.</li>
+<li>use <code>anti_join()</code>to get rid of anything that shows up in hobbit_tokens and also in stop_words</li>
+</ul>
+<pre class="r"><code>hobbit_nonstop_words &lt;- hobbit_tokens %&gt;% 
+  anti_join(stop_words)</code></pre>
+<pre><code>## Joining, by = &quot;word&quot;</code></pre>
+<pre class="r"><code>nonstop_counts &lt;- hobbit_nonstop_words %&gt;% 
+  count(chapter, word)</code></pre>
+</div>
 
 
 

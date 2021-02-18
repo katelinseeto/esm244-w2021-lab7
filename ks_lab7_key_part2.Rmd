@@ -63,11 +63,42 @@ hobbit_df <- hobbit_tidy %>%
   fill(chapter)
 ```
 
+### Create new column with just chapter # so when we plot it won't be in alphabetical order 
+*`separate()` to separate chapt # into it's own column
+* However since chapter number is a roman numeral it's intitally recognized as a character. 
+* Use mutate to create new col called chapter which is a numeric version of the roman numeral version of the number col
 
+```{r}
+ hobbit_df <- hobbit_df %>% 
+  separate(col = chapter, into = c("ch", "no"), sep = " ") %>% 
+  mutate(chapter = as.numeric(as.roman(no)))
+```
 
+### Get into tokenized version where one token is a single word
+* tidy format for text analysis
+* `unnest_tokens()` function to split columns into tokens, flattening the table into one token per row. unnest_tokens(name of new column, source you'll break up)
 
+```{r}
+hobbit_tokens <- hobbit_df %>% 
+  unnest_tokens(word, text_full) %>% 
+  select(-hobbit_text)
 
+# Get word count by chapter
+hobbit_wordcount <- hobbit_tokens %>% 
+  count(chapter, word) 
+```
 
+### Remove all stop_words that exist in hobbit_tokens
+* stop_words are words like a, the, of, etc. 
+* use `anti_join()`to get rid of anything that shows up in hobbit_tokens and also in stop_words
+
+```{r}
+hobbit_nonstop_words <- hobbit_tokens %>% 
+  anti_join(stop_words)
+
+nonstop_counts <- hobbit_nonstop_words %>% 
+  count(chapter, word)
+```
 
 
 
