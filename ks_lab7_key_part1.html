@@ -200,6 +200,7 @@ summary {
 <ul>
 <li>function to search for a pattern you provide in the variable you specify for any entry that matches that pattern<br />
 </li>
+<li>is case sensitive</li>
 <li>looks for exact match to pattern and returns TRUE or FALSE (a logical) for each element<br />
 </li>
 <li><code>str_subset()</code> wraps <code>filter()</code> and <code>str_detect()</code> into one function</li>
@@ -237,6 +238,44 @@ vec_bren</code></pre>
 <pre class="r"><code># in df, replace the pattern &quot;Sky&quot; with the pattern &quot;TORNADO&quot;
 sw_tornado &lt;- starwars %&gt;% 
   mutate(name = str_replace(name, pattern = &quot;Sky&quot;, replacement = &quot;TORNADO&quot;))</code></pre>
+</div>
+<div id="remove-excess-leading-and-trailing-whitespace-using-str_trim" class="section level3">
+<h3>Remove excess leading and trailing whitespace using <code>str_trim()</code></h3>
+<ul>
+<li>still doesn’t remove repeated interior whitespaces</li>
+</ul>
+<pre class="r"><code>str_trim(vec)</code></pre>
+<pre><code>## [1] &quot;A Unicorn   Fish&quot; &quot;add   cornmeal&quot;   &quot;French FRIES&quot;     &quot;acorn Squash&quot;</code></pre>
+</div>
+<div id="remove-repeated-interior-whitespaces-and-leading-and-trailing-whitespaces-with-str_squish" class="section level3">
+<h3>Remove repeated interior whitespaces AND leading and trailing whitespaces with <code>str_squish()</code></h3>
+<pre class="r"><code>str_squish(vec)</code></pre>
+<pre><code>## [1] &quot;A Unicorn Fish&quot; &quot;add cornmeal&quot;   &quot;French FRIES&quot;   &quot;acorn Squash&quot;</code></pre>
+</div>
+<div id="functions-to-update-string-case-for-consistency-and-making-it-look-nice" class="section level3">
+<h3>Functions to update string case for consistency and making it look nice</h3>
+<ul>
+<li><code>str_to_*()</code> function to convert string to whatever case (*) you want to convert to</li>
+</ul>
+<pre class="r"><code>str_to_lower(vec)</code></pre>
+<pre><code>## [1] &quot;a unicorn   fish &quot; &quot;add   cornmeal&quot;    &quot;french fries&quot;     
+## [4] &quot;acorn squash &quot;</code></pre>
+<pre class="r"><code>str_to_upper(vec)</code></pre>
+<pre><code>## [1] &quot;A UNICORN   FISH &quot; &quot;ADD   CORNMEAL&quot;    &quot;FRENCH FRIES&quot;     
+## [4] &quot;ACORN SQUASH &quot;</code></pre>
+<pre class="r"><code>str_to_title(vec)</code></pre>
+<pre><code>## [1] &quot;A Unicorn   Fish &quot; &quot;Add   Cornmeal&quot;    &quot;French Fries&quot;     
+## [4] &quot;Acorn Squash &quot;</code></pre>
+</div>
+<div id="using-these-in-combination" class="section level3">
+<h3>Using these in combination</h3>
+<pre class="r"><code># Filter to only retain obs with pattern &quot;Darth&quot;
+# Replace that pattern &quot;LLAMA&quot; 
+# Change all to lowercase 
+sw_combo &lt;- starwars %&gt;% 
+  filter(str_detect(name, pattern = &quot;Darth&quot;)) %&gt;% 
+  mutate(name = str_replace(name, pattern = &quot;Darth&quot;, replacement = &quot;LLAMA&quot;)) %&gt;% 
+  mutate(name = str_to_lower(name))</code></pre>
 </div>
 
 
