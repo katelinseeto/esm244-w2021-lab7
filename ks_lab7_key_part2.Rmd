@@ -130,6 +130,45 @@ ch1_cloud <- ggplot(data = ch1_top100, aes(label = word)) +
 ch1_cloud
 
 ```
+### Sentiment analysis of each chapter with `afinn` lexicon
+*`get_sentiments()` and then specify which lexicon to look at 
+* `inner_join()` will only keep words in the hobbit that match with words in afinn
+```{r}
+affin_pos <- get_sentiments("afinn") %>% 
+  filter(value > 2)  # get words that are afinn score of 3,4,5
+  
+# With `afinn`
+hobbit_afinn <- hobbit_nonstop_words %>% 
+  inner_join(get_sentiments("afinn"))
+
+affin_counts <- hobbit_afinn %>% 
+  count(chapter, value)
+
+# Mean sentiment score with `afinn`
+afinn_means <- hobbit_afinn %>% 
+  group_by(chapter) %>% 
+  summarise(mean_afinn = mean(value))
+
+ggplot(data = afinn_means, 
+       aes(x = chapter, y = mean_afinn)) + 
+  geom_col() +
+  coord_flip()
+
+```
+### Sentiment analysis of each chapter with NRC lexicon
+```{r}
+hobbit_nrc <- hobbit_nonstop_words %>% 
+  inner_join(get_sentiments("nrc"))
+
+hobbit_nrc_counts <- hobbit_nrc %>% 
+  count(chapter, sentiment)
+
+ggplot(data = hobbit_nrc_counts, aes(x = sentiment, y = n)) +
+  geom_col() +
+  facet_wrap(~chapter) + 
+  coord_flip()
+
+```
 
 
 
