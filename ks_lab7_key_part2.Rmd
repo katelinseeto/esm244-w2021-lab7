@@ -100,7 +100,36 @@ nonstop_counts <- hobbit_nonstop_words %>%
   count(chapter, word)
 ```
 
+### Find top 5 words by chapter
+```{r}
+top_5_words <- nonstop_counts %>% 
+  group_by(chapter) %>% 
+  arrange(-n) %>% 
+  slice(1:5)
 
+#plot these counts 
+ggplot(data = top_5_words, aes(x = word, y = n)) + 
+  geom_col(fill = "blue") + 
+  facet_wrap(~chapter, scales = "free") + 
+  coord_flip()
+```
+
+### Make word cloud 
+```{r}
+# Get top 100 words in Ch 1
+ch1_top100 <- nonstop_counts %>% 
+  filter(chapter == 1) %>% 
+  arrange(-n) %>% 
+  slice(1:100)
+# Not the most effective way to do this, could do group_by chapter and then slice_max
+
+ch1_cloud <- ggplot(data = ch1_top100, aes(label = word)) + 
+  geom_text_wordcloud(aes(color = n, size = n)) + 
+  scale_size_area(max_size = 6)
+
+ch1_cloud
+
+```
 
 
 
